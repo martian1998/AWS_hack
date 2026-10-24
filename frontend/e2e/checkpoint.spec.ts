@@ -1,0 +1,47 @@
+import { expect, test } from '@playwright/test';
+test('desktop mock journey, replay and explicit human case actions', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.setViewportSize({ width: 1440, height: 1100 });
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Keep every patient in view.' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Sofia Martinez', exact: true })).toBeVisible();
+  await page.screenshot({ path: '../docs/evidence/stage-a-desktop.png', fullPage: true });
+  await page.getByRole('button', { name: 'Review uncertainty' }).click();
+  await expect(page.getByRole('heading', { name: 'Confirmation is required before outreach' })).toBeVisible();
+  await page.getByRole('button', { name: 'Next page' }).click();
+  await expect(page.getByText('Page 2', { exact: true })).toBeVisible();
+  await page.getByLabel('Search patients').fill('Sofia');
+  await expect(page.getByRole('button', { name: 'Sofia Martinez', exact: true })).toBeVisible();
+  await page.getByLabel('Search patients').fill('not a person');
+  await expect(page.getByText('No patients match these filters.')).toBeVisible();
+  await page.getByLabel('Search patients').fill('');
+  await page.getByRole('button', { name: 'Simulator', exact: true }).click();
+  await page.getByLabel('Send a synthetic reply').fill('Más o menos.');
+  await page.getByRole('button', { name: 'Send mock reply' }).click();
+  await expect(page.getByRole('status')).toContainText('human review required');
+  await page.getByRole('button', { name: 'Replay same source ID' }).click();
+  await expect(page.getByRole('status')).toContainText('Duplicate recognized');
+  await page.getByRole('button', { name: 'Acknowledge', exact: true }).click();
+  await page.getByLabel('Resolution notes').fill('Synthetic handoff complete.');
+  await page.getByRole('button', { name: 'Resolve mock case' }).click();
+  await expect(page.getByText('No active mock cases.')).toBeVisible();
+  await page.getByRole('button', { name: 'Operations', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Mock job ledger' })).toBeVisible();
+  await expect(page.locator('.job-row')).toHaveCount(1);
+  await page.getByRole('button', { name: 'Activity log' }).click();
+  await expect(page.getByRole('cell', { name: 'Mock case resolve', exact: true })).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test('mobile layout and phone preview', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Patient outreach', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Simulator', exact: true }).click();
+  await page.getByLabel('Send a synthetic reply').fill('Necesito ayuda.');
+  await page.getByRole('button', { name: 'Send mock reply' }).click();
+  await expect(page.getByRole('status')).toContainText('human review');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: '../docs/evidence/stage-a-mobile.png', fullPage: true });
+});

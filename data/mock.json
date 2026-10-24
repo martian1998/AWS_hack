@@ -1,0 +1,1295 @@
+{
+  "board": {
+    "event": {
+      "utility": "Bay Valley Electric (fictional)",
+      "areas": [
+        {
+          "name": "East San Jose",
+          "zips": [
+            "95116",
+            "95122",
+            "95127"
+          ],
+          "confident": true
+        }
+      ],
+      "flagged_areas": [
+        "Foothill communities — exact area unconfirmed"
+      ],
+      "start": "2026-10-23T20:00:00-07:00",
+      "est_restore": null,
+      "confidence": 0.72,
+      "is_cancellation": false,
+      "event_id": "E-001",
+      "tenant_id": "agency-a",
+      "version": 1,
+      "status": "needs_confirmation",
+      "outage_hours": null
+    },
+    "patients": {
+      "items": [
+        {
+          "patient": {
+            "patient_id": "P-0001",
+            "tenant_id": "agency-a",
+            "display_name": "Sofia Martinez",
+            "language": "es",
+            "address": {
+              "city": "San Jose",
+              "zip": "95127"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "oxygen_concentrator",
+                "backup_hours": 2.0,
+                "backup_tank": false
+              }
+            ],
+            "lives_alone": true,
+            "mobility_limited": true
+          },
+          "tier": "CRITICAL",
+          "score": 6.0,
+          "reasons": [
+            "2.0h documented backup",
+            "Lives alone"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "escalated"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0002",
+            "tenant_id": "agency-a",
+            "display_name": "Minh Tran",
+            "language": "vi",
+            "address": {
+              "city": "San Jose",
+              "zip": "95122"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "ventilator",
+                "backup_hours": 4.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "CRITICAL",
+          "score": 6.0,
+          "reasons": [
+            "4.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "awaiting_reply"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0003",
+            "tenant_id": "agency-a",
+            "display_name": "Evelyn Chen",
+            "language": "zh",
+            "address": {
+              "city": "San Jose",
+              "zip": "95127"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "cpap",
+                "backup_hours": 8.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "HIGH",
+          "score": 4.0,
+          "reasons": [
+            "8.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "human_review"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0004",
+            "tenant_id": "agency-a",
+            "display_name": "Rosa Santos",
+            "language": "tl",
+            "address": {
+              "city": "San Jose",
+              "zip": "95116"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "bipap",
+                "backup_hours": 12.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": true,
+            "mobility_limited": false
+          },
+          "tier": "HIGH",
+          "score": 4.0,
+          "reasons": [
+            "12.0h documented backup",
+            "Lives alone"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "needs_help"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0005",
+            "tenant_id": "agency-a",
+            "display_name": "James Reed",
+            "language": "en",
+            "address": {
+              "city": "San Jose",
+              "zip": "95122"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "feeding_pump",
+                "backup_hours": 24.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": true
+          },
+          "tier": "HIGH",
+          "score": 4.0,
+          "reasons": [
+            "24.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "reported_safe"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0007",
+            "tenant_id": "agency-a",
+            "display_name": "Elena Cruz",
+            "language": "es",
+            "address": {
+              "city": "San Jose",
+              "zip": "95116"
+            },
+            "contact": {
+              "type": "caregiver",
+              "caregiver_name": "Demo caregiver"
+            },
+            "devices": [
+              {
+                "type": "refrigeration",
+                "backup_hours": 4.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": true,
+            "mobility_limited": false
+          },
+          "tier": "HIGH",
+          "score": 4.0,
+          "reasons": [
+            "4.0h documented backup",
+            "Lives alone"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "needs_help"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0008",
+            "tenant_id": "agency-a",
+            "display_name": "Daniel Wu",
+            "language": "zh",
+            "address": {
+              "city": "San Jose",
+              "zip": "95122"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "wheelchair",
+                "backup_hours": 8.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "HIGH",
+          "score": 4.0,
+          "reasons": [
+            "8.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "awaiting_reply"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0009",
+            "tenant_id": "agency-a",
+            "display_name": "Ana Reyes",
+            "language": "tl",
+            "address": {
+              "city": "San Jose",
+              "zip": "95127"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "oxygen_concentrator",
+                "backup_hours": null,
+                "backup_tank": false
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": true
+          },
+          "tier": "HIGH",
+          "score": 4.0,
+          "reasons": [
+            "Backup duration unknown",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "human_review"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0010",
+            "tenant_id": "agency-a",
+            "display_name": "Owen Brooks",
+            "language": "en",
+            "address": {
+              "city": "San Jose",
+              "zip": "95116"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "ventilator",
+                "backup_hours": 24.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": true,
+            "mobility_limited": false
+          },
+          "tier": "HIGH",
+          "score": 4.0,
+          "reasons": [
+            "24.0h documented backup",
+            "Lives alone"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "needs_help"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0012",
+            "tenant_id": "agency-a",
+            "display_name": "Luis Vega",
+            "language": "es",
+            "address": {
+              "city": "San Jose",
+              "zip": "95127"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "bipap",
+                "backup_hours": 4.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "HIGH",
+          "score": 4.0,
+          "reasons": [
+            "4.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "not_contacted"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0013",
+            "tenant_id": "agency-a",
+            "display_name": "Sofia Martinez 2",
+            "language": "es",
+            "address": {
+              "city": "San Jose",
+              "zip": "95116"
+            },
+            "contact": {
+              "type": "none",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "feeding_pump",
+                "backup_hours": 8.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": true,
+            "mobility_limited": true
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "8.0h documented backup",
+            "Lives alone"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "needs_help"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0014",
+            "tenant_id": "agency-a",
+            "display_name": "Minh Tran 2",
+            "language": "vi",
+            "address": {
+              "city": "San Jose",
+              "zip": "95122"
+            },
+            "contact": {
+              "type": "caregiver",
+              "caregiver_name": "Demo caregiver"
+            },
+            "devices": [
+              {
+                "type": "suction",
+                "backup_hours": 12.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "12.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "awaiting_reply"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0015",
+            "tenant_id": "agency-a",
+            "display_name": "Evelyn Chen 2",
+            "language": "zh",
+            "address": {
+              "city": "San Jose",
+              "zip": "95127"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "refrigeration",
+                "backup_hours": 24.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "24.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "human_review"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0017",
+            "tenant_id": "agency-a",
+            "display_name": "James Reed 2",
+            "language": "en",
+            "address": {
+              "city": "San Jose",
+              "zip": "95122"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "oxygen_concentrator",
+                "backup_hours": 4.0,
+                "backup_tank": false
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": true
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "4.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "reported_safe"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0018",
+            "tenant_id": "agency-a",
+            "display_name": "Linh Nguyen 2",
+            "language": "vi",
+            "address": {
+              "city": "San Jose",
+              "zip": "95127"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "ventilator",
+                "backup_hours": null,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "Backup duration unknown",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "not_contacted"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0019",
+            "tenant_id": "agency-a",
+            "display_name": "Elena Cruz 2",
+            "language": "es",
+            "address": {
+              "city": "San Jose",
+              "zip": "95116"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "cpap",
+                "backup_hours": 12.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": true,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "12.0h documented backup",
+            "Lives alone"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "needs_help"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0020",
+            "tenant_id": "agency-a",
+            "display_name": "Daniel Wu 2",
+            "language": "zh",
+            "address": {
+              "city": "San Jose",
+              "zip": "95122"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "bipap",
+                "backup_hours": 24.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "24.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "awaiting_reply"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0022",
+            "tenant_id": "agency-a",
+            "display_name": "Owen Brooks 2",
+            "language": "en",
+            "address": {
+              "city": "San Jose",
+              "zip": "95116"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "suction",
+                "backup_hours": 4.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": true,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "4.0h documented backup",
+            "Lives alone"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "needs_help"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0023",
+            "tenant_id": "agency-a",
+            "display_name": "Maya Patel 2",
+            "language": "en",
+            "address": {
+              "city": "San Jose",
+              "zip": "95122"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "refrigeration",
+                "backup_hours": 8.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "8.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "reported_safe"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0024",
+            "tenant_id": "agency-a",
+            "display_name": "Luis Vega 2",
+            "language": "es",
+            "address": {
+              "city": "San Jose",
+              "zip": "95127"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "wheelchair",
+                "backup_hours": 12.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "12.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "not_contacted"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0025",
+            "tenant_id": "agency-a",
+            "display_name": "Sofia Martinez 3",
+            "language": "es",
+            "address": {
+              "city": "San Jose",
+              "zip": "95116"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "oxygen_concentrator",
+                "backup_hours": 24.0,
+                "backup_tank": false
+              }
+            ],
+            "lives_alone": true,
+            "mobility_limited": true
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "24.0h documented backup",
+            "Lives alone"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "needs_help"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0027",
+            "tenant_id": "agency-a",
+            "display_name": "Evelyn Chen 3",
+            "language": "zh",
+            "address": {
+              "city": "San Jose",
+              "zip": "95127"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "cpap",
+                "backup_hours": null,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "Backup duration unknown",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "human_review"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0028",
+            "tenant_id": "agency-a",
+            "display_name": "Rosa Santos 3",
+            "language": "tl",
+            "address": {
+              "city": "San Jose",
+              "zip": "95116"
+            },
+            "contact": {
+              "type": "caregiver",
+              "caregiver_name": "Demo caregiver"
+            },
+            "devices": [
+              {
+                "type": "bipap",
+                "backup_hours": 8.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": true,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "8.0h documented backup",
+            "Lives alone"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "needs_help"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0029",
+            "tenant_id": "agency-a",
+            "display_name": "James Reed 3",
+            "language": "en",
+            "address": {
+              "city": "San Jose",
+              "zip": "95122"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "feeding_pump",
+                "backup_hours": 12.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": true
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "12.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "reported_safe"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0030",
+            "tenant_id": "agency-a",
+            "display_name": "Linh Nguyen 3",
+            "language": "vi",
+            "address": {
+              "city": "San Jose",
+              "zip": "95127"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "suction",
+                "backup_hours": 24.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "24.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "not_contacted"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0032",
+            "tenant_id": "agency-a",
+            "display_name": "Daniel Wu 3",
+            "language": "zh",
+            "address": {
+              "city": "San Jose",
+              "zip": "95122"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "wheelchair",
+                "backup_hours": 4.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "4.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "awaiting_reply"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0033",
+            "tenant_id": "agency-a",
+            "display_name": "Ana Reyes 3",
+            "language": "tl",
+            "address": {
+              "city": "San Jose",
+              "zip": "95127"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "oxygen_concentrator",
+                "backup_hours": 8.0,
+                "backup_tank": false
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": true
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "8.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "human_review"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0034",
+            "tenant_id": "agency-a",
+            "display_name": "Owen Brooks 3",
+            "language": "en",
+            "address": {
+              "city": "San Jose",
+              "zip": "95116"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "ventilator",
+                "backup_hours": 12.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": true,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "12.0h documented backup",
+            "Lives alone"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "needs_help"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0035",
+            "tenant_id": "agency-a",
+            "display_name": "Maya Patel 3",
+            "language": "en",
+            "address": {
+              "city": "San Jose",
+              "zip": "95122"
+            },
+            "contact": {
+              "type": "caregiver",
+              "caregiver_name": "Demo caregiver"
+            },
+            "devices": [
+              {
+                "type": "cpap",
+                "backup_hours": 24.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "24.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "reported_safe"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0037",
+            "tenant_id": "agency-a",
+            "display_name": "Sofia Martinez 4",
+            "language": "es",
+            "address": {
+              "city": "San Jose",
+              "zip": "95116"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "feeding_pump",
+                "backup_hours": 4.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": true,
+            "mobility_limited": true
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "4.0h documented backup",
+            "Lives alone"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "needs_help"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0038",
+            "tenant_id": "agency-a",
+            "display_name": "Minh Tran 4",
+            "language": "vi",
+            "address": {
+              "city": "San Jose",
+              "zip": "95122"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "suction",
+                "backup_hours": 8.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "8.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "awaiting_reply"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0039",
+            "tenant_id": "agency-a",
+            "display_name": "Evelyn Chen 4",
+            "language": "zh",
+            "address": {
+              "city": "San Jose",
+              "zip": "95127"
+            },
+            "contact": {
+              "type": "none",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "refrigeration",
+                "backup_hours": 12.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": false,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "12.0h documented backup",
+            "Contact information available"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "human_review"
+        },
+        {
+          "patient": {
+            "patient_id": "P-0040",
+            "tenant_id": "agency-a",
+            "display_name": "Rosa Santos 4",
+            "language": "tl",
+            "address": {
+              "city": "San Jose",
+              "zip": "95116"
+            },
+            "contact": {
+              "type": "self",
+              "caregiver_name": null
+            },
+            "devices": [
+              {
+                "type": "wheelchair",
+                "backup_hours": 24.0,
+                "backup_tank": null
+              }
+            ],
+            "lives_alone": true,
+            "mobility_limited": false
+          },
+          "tier": "MEDIUM",
+          "score": 2.0,
+          "reasons": [
+            "24.0h documented backup",
+            "Lives alone"
+          ],
+          "uncertainties": [
+            "Restoration time unknown"
+          ],
+          "status": "needs_help"
+        }
+      ],
+      "next_cursor": null,
+      "observed_at": "2026-10-24T03:00:00Z"
+    },
+    "total_affected": 33,
+    "counts": {
+      "escalated": 1,
+      "awaiting_reply": 6,
+      "human_review": 6,
+      "needs_help": 11,
+      "reported_safe": 5,
+      "not_contacted": 4
+    },
+    "mode": "MOCK"
+  },
+  "thread": {
+    "patient": {
+      "patient_id": "P-0001",
+      "tenant_id": "agency-a",
+      "display_name": "Sofia Martinez",
+      "language": "es",
+      "address": {
+        "city": "San Jose",
+        "zip": "95127"
+      },
+      "contact": {
+        "type": "self",
+        "caregiver_name": null
+      },
+      "devices": [
+        {
+          "type": "oxygen_concentrator",
+          "backup_hours": 2.0,
+          "backup_tank": false
+        }
+      ],
+      "lives_alone": true,
+      "mobility_limited": true
+    },
+    "messages": {
+      "items": [
+        {
+          "message_id": "M-001",
+          "source_message_id": "S-001",
+          "patient_id": "P-0001",
+          "event_id": "E-001",
+          "direction": "out",
+          "text": "Hola Sofia. Este es un mensaje de demostración de su equipo de atención. Responda 1 para confirmar o 2 para pedir ayuda.",
+          "language": "es",
+          "created_at": "2026-10-24T03:00:00Z",
+          "sequence": 1,
+          "triage": null,
+          "processing_state": "SUCCEEDED",
+          "delivery": "sent",
+          "mode": "MOCK"
+        },
+        {
+          "message_id": "M-002",
+          "source_message_id": "S-002",
+          "patient_id": "P-0001",
+          "event_id": "E-001",
+          "direction": "in",
+          "text": "No puedo respirar. Mi máquina se apagó.",
+          "language": "es",
+          "created_at": "2026-10-24T03:00:00Z",
+          "sequence": 2,
+          "triage": {
+            "patient_reported_safe": "no",
+            "emergency": "yes",
+            "device_running": false,
+            "backup_hours_left": null,
+            "needs": [],
+            "english_translation": "I can't breathe. My machine turned off.",
+            "evidence_quotes": [
+              "No puedo respirar",
+              "Mi máquina se apagó"
+            ],
+            "confidence": 0.94
+          },
+          "processing_state": "SUCCEEDED",
+          "delivery": "acknowledged",
+          "mode": "MOCK"
+        }
+      ],
+      "next_cursor": null,
+      "observed_at": "2026-10-24T03:00:00Z"
+    },
+    "cases": [
+      {
+        "case_id": "C-001",
+        "event_id": "E-001",
+        "patient_id": "P-0001",
+        "tier": "CRITICAL",
+        "reason": "Fixture: patient reports breathing difficulty and a stopped device.",
+        "evidence_quotes": [
+          "No puedo respirar",
+          "Mi máquina se apagó"
+        ],
+        "state": "OPEN",
+        "version": 1,
+        "assigned_to": null,
+        "created_at": "2026-10-24T03:00:00Z",
+        "acknowledged_at": null,
+        "resolved_at": null,
+        "resolved_by": null,
+        "notes": null
+      }
+    ]
+  }
+}

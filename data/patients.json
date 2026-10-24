@@ -1,0 +1,1382 @@
+[
+  {
+    "patient_id": "P-0001",
+    "tenant_id": "agency-a",
+    "display_name": "Sofia Martinez",
+    "language": "es",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "oxygen_concentrator",
+        "backup_hours": 2.0,
+        "backup_tank": false
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": true
+  },
+  {
+    "patient_id": "P-0002",
+    "tenant_id": "agency-a",
+    "display_name": "Minh Tran",
+    "language": "vi",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "ventilator",
+        "backup_hours": 4.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0003",
+    "tenant_id": "agency-a",
+    "display_name": "Evelyn Chen",
+    "language": "zh",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "cpap",
+        "backup_hours": 8.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0004",
+    "tenant_id": "agency-a",
+    "display_name": "Rosa Santos",
+    "language": "tl",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "bipap",
+        "backup_hours": 12.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0005",
+    "tenant_id": "agency-a",
+    "display_name": "James Reed",
+    "language": "en",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "feeding_pump",
+        "backup_hours": 24.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": true
+  },
+  {
+    "patient_id": "P-0006",
+    "tenant_id": "agency-a",
+    "display_name": "Linh Nguyen",
+    "language": "vi",
+    "address": {
+      "city": "San Jose",
+      "zip": "95035"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "suction",
+        "backup_hours": 2.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0007",
+    "tenant_id": "agency-a",
+    "display_name": "Elena Cruz",
+    "language": "es",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "caregiver",
+      "caregiver_name": "Demo caregiver"
+    },
+    "devices": [
+      {
+        "type": "refrigeration",
+        "backup_hours": 4.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0008",
+    "tenant_id": "agency-a",
+    "display_name": "Daniel Wu",
+    "language": "zh",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "wheelchair",
+        "backup_hours": 8.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0009",
+    "tenant_id": "agency-a",
+    "display_name": "Ana Reyes",
+    "language": "tl",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "oxygen_concentrator",
+        "backup_hours": null,
+        "backup_tank": false
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": true
+  },
+  {
+    "patient_id": "P-0010",
+    "tenant_id": "agency-a",
+    "display_name": "Owen Brooks",
+    "language": "en",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "ventilator",
+        "backup_hours": 24.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0011",
+    "tenant_id": "agency-a",
+    "display_name": "Maya Patel",
+    "language": "en",
+    "address": {
+      "city": "San Jose",
+      "zip": "95035"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "cpap",
+        "backup_hours": 2.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0012",
+    "tenant_id": "agency-a",
+    "display_name": "Luis Vega",
+    "language": "es",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "bipap",
+        "backup_hours": 4.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0013",
+    "tenant_id": "agency-a",
+    "display_name": "Sofia Martinez 2",
+    "language": "es",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "none",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "feeding_pump",
+        "backup_hours": 8.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": true
+  },
+  {
+    "patient_id": "P-0014",
+    "tenant_id": "agency-a",
+    "display_name": "Minh Tran 2",
+    "language": "vi",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "caregiver",
+      "caregiver_name": "Demo caregiver"
+    },
+    "devices": [
+      {
+        "type": "suction",
+        "backup_hours": 12.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0015",
+    "tenant_id": "agency-a",
+    "display_name": "Evelyn Chen 2",
+    "language": "zh",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "refrigeration",
+        "backup_hours": 24.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0016",
+    "tenant_id": "agency-a",
+    "display_name": "Rosa Santos 2",
+    "language": "tl",
+    "address": {
+      "city": "San Jose",
+      "zip": "95035"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "wheelchair",
+        "backup_hours": 2.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0017",
+    "tenant_id": "agency-a",
+    "display_name": "James Reed 2",
+    "language": "en",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "oxygen_concentrator",
+        "backup_hours": 4.0,
+        "backup_tank": false
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": true
+  },
+  {
+    "patient_id": "P-0018",
+    "tenant_id": "agency-a",
+    "display_name": "Linh Nguyen 2",
+    "language": "vi",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "ventilator",
+        "backup_hours": null,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0019",
+    "tenant_id": "agency-a",
+    "display_name": "Elena Cruz 2",
+    "language": "es",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "cpap",
+        "backup_hours": 12.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0020",
+    "tenant_id": "agency-a",
+    "display_name": "Daniel Wu 2",
+    "language": "zh",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "bipap",
+        "backup_hours": 24.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0021",
+    "tenant_id": "agency-a",
+    "display_name": "Ana Reyes 2",
+    "language": "tl",
+    "address": {
+      "city": "San Jose",
+      "zip": "95035"
+    },
+    "contact": {
+      "type": "caregiver",
+      "caregiver_name": "Demo caregiver"
+    },
+    "devices": [
+      {
+        "type": "feeding_pump",
+        "backup_hours": 2.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": true
+  },
+  {
+    "patient_id": "P-0022",
+    "tenant_id": "agency-a",
+    "display_name": "Owen Brooks 2",
+    "language": "en",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "suction",
+        "backup_hours": 4.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0023",
+    "tenant_id": "agency-a",
+    "display_name": "Maya Patel 2",
+    "language": "en",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "refrigeration",
+        "backup_hours": 8.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0024",
+    "tenant_id": "agency-a",
+    "display_name": "Luis Vega 2",
+    "language": "es",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "wheelchair",
+        "backup_hours": 12.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0025",
+    "tenant_id": "agency-a",
+    "display_name": "Sofia Martinez 3",
+    "language": "es",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "oxygen_concentrator",
+        "backup_hours": 24.0,
+        "backup_tank": false
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": true
+  },
+  {
+    "patient_id": "P-0026",
+    "tenant_id": "agency-a",
+    "display_name": "Minh Tran 3",
+    "language": "vi",
+    "address": {
+      "city": "San Jose",
+      "zip": "95035"
+    },
+    "contact": {
+      "type": "none",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "ventilator",
+        "backup_hours": 2.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0027",
+    "tenant_id": "agency-a",
+    "display_name": "Evelyn Chen 3",
+    "language": "zh",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "cpap",
+        "backup_hours": null,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0028",
+    "tenant_id": "agency-a",
+    "display_name": "Rosa Santos 3",
+    "language": "tl",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "caregiver",
+      "caregiver_name": "Demo caregiver"
+    },
+    "devices": [
+      {
+        "type": "bipap",
+        "backup_hours": 8.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0029",
+    "tenant_id": "agency-a",
+    "display_name": "James Reed 3",
+    "language": "en",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "feeding_pump",
+        "backup_hours": 12.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": true
+  },
+  {
+    "patient_id": "P-0030",
+    "tenant_id": "agency-a",
+    "display_name": "Linh Nguyen 3",
+    "language": "vi",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "suction",
+        "backup_hours": 24.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0031",
+    "tenant_id": "agency-a",
+    "display_name": "Elena Cruz 3",
+    "language": "es",
+    "address": {
+      "city": "San Jose",
+      "zip": "95035"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "refrigeration",
+        "backup_hours": 2.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0032",
+    "tenant_id": "agency-a",
+    "display_name": "Daniel Wu 3",
+    "language": "zh",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "wheelchair",
+        "backup_hours": 4.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0033",
+    "tenant_id": "agency-a",
+    "display_name": "Ana Reyes 3",
+    "language": "tl",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "oxygen_concentrator",
+        "backup_hours": 8.0,
+        "backup_tank": false
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": true
+  },
+  {
+    "patient_id": "P-0034",
+    "tenant_id": "agency-a",
+    "display_name": "Owen Brooks 3",
+    "language": "en",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "ventilator",
+        "backup_hours": 12.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0035",
+    "tenant_id": "agency-a",
+    "display_name": "Maya Patel 3",
+    "language": "en",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "caregiver",
+      "caregiver_name": "Demo caregiver"
+    },
+    "devices": [
+      {
+        "type": "cpap",
+        "backup_hours": 24.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0036",
+    "tenant_id": "agency-a",
+    "display_name": "Luis Vega 3",
+    "language": "es",
+    "address": {
+      "city": "San Jose",
+      "zip": "95035"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "bipap",
+        "backup_hours": null,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0037",
+    "tenant_id": "agency-a",
+    "display_name": "Sofia Martinez 4",
+    "language": "es",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "feeding_pump",
+        "backup_hours": 4.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": true
+  },
+  {
+    "patient_id": "P-0038",
+    "tenant_id": "agency-a",
+    "display_name": "Minh Tran 4",
+    "language": "vi",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "suction",
+        "backup_hours": 8.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0039",
+    "tenant_id": "agency-a",
+    "display_name": "Evelyn Chen 4",
+    "language": "zh",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "none",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "refrigeration",
+        "backup_hours": 12.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0040",
+    "tenant_id": "agency-a",
+    "display_name": "Rosa Santos 4",
+    "language": "tl",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "wheelchair",
+        "backup_hours": 24.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0041",
+    "tenant_id": "agency-b",
+    "display_name": "James Reed 4",
+    "language": "en",
+    "address": {
+      "city": "San Jose",
+      "zip": "95035"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "oxygen_concentrator",
+        "backup_hours": 2.0,
+        "backup_tank": false
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": true
+  },
+  {
+    "patient_id": "P-0042",
+    "tenant_id": "agency-b",
+    "display_name": "Linh Nguyen 4",
+    "language": "vi",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "caregiver",
+      "caregiver_name": "Demo caregiver"
+    },
+    "devices": [
+      {
+        "type": "ventilator",
+        "backup_hours": 4.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0043",
+    "tenant_id": "agency-b",
+    "display_name": "Elena Cruz 4",
+    "language": "es",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "cpap",
+        "backup_hours": 8.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0044",
+    "tenant_id": "agency-b",
+    "display_name": "Daniel Wu 4",
+    "language": "zh",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "bipap",
+        "backup_hours": 12.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0045",
+    "tenant_id": "agency-b",
+    "display_name": "Ana Reyes 4",
+    "language": "tl",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "feeding_pump",
+        "backup_hours": null,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": true
+  },
+  {
+    "patient_id": "P-0046",
+    "tenant_id": "agency-b",
+    "display_name": "Owen Brooks 4",
+    "language": "en",
+    "address": {
+      "city": "San Jose",
+      "zip": "95035"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "suction",
+        "backup_hours": 2.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0047",
+    "tenant_id": "agency-b",
+    "display_name": "Maya Patel 4",
+    "language": "en",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "refrigeration",
+        "backup_hours": 4.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0048",
+    "tenant_id": "agency-b",
+    "display_name": "Luis Vega 4",
+    "language": "es",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "wheelchair",
+        "backup_hours": 8.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0049",
+    "tenant_id": "agency-b",
+    "display_name": "Sofia Martinez 5",
+    "language": "es",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "caregiver",
+      "caregiver_name": "Demo caregiver"
+    },
+    "devices": [
+      {
+        "type": "oxygen_concentrator",
+        "backup_hours": 12.0,
+        "backup_tank": false
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": true
+  },
+  {
+    "patient_id": "P-0050",
+    "tenant_id": "agency-b",
+    "display_name": "Minh Tran 5",
+    "language": "vi",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "ventilator",
+        "backup_hours": 24.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0051",
+    "tenant_id": "agency-b",
+    "display_name": "Evelyn Chen 5",
+    "language": "zh",
+    "address": {
+      "city": "San Jose",
+      "zip": "95035"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "cpap",
+        "backup_hours": 2.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0052",
+    "tenant_id": "agency-b",
+    "display_name": "Rosa Santos 5",
+    "language": "tl",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "none",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "bipap",
+        "backup_hours": 4.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0053",
+    "tenant_id": "agency-b",
+    "display_name": "James Reed 5",
+    "language": "en",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "feeding_pump",
+        "backup_hours": 8.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": true
+  },
+  {
+    "patient_id": "P-0054",
+    "tenant_id": "agency-b",
+    "display_name": "Linh Nguyen 5",
+    "language": "vi",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "suction",
+        "backup_hours": null,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0055",
+    "tenant_id": "agency-b",
+    "display_name": "Elena Cruz 5",
+    "language": "es",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "refrigeration",
+        "backup_hours": 24.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0056",
+    "tenant_id": "agency-b",
+    "display_name": "Daniel Wu 5",
+    "language": "zh",
+    "address": {
+      "city": "San Jose",
+      "zip": "95035"
+    },
+    "contact": {
+      "type": "caregiver",
+      "caregiver_name": "Demo caregiver"
+    },
+    "devices": [
+      {
+        "type": "wheelchair",
+        "backup_hours": 2.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0057",
+    "tenant_id": "agency-b",
+    "display_name": "Ana Reyes 5",
+    "language": "tl",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "oxygen_concentrator",
+        "backup_hours": 4.0,
+        "backup_tank": false
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": true
+  },
+  {
+    "patient_id": "P-0058",
+    "tenant_id": "agency-b",
+    "display_name": "Owen Brooks 5",
+    "language": "en",
+    "address": {
+      "city": "San Jose",
+      "zip": "95116"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "ventilator",
+        "backup_hours": 8.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": true,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0059",
+    "tenant_id": "agency-b",
+    "display_name": "Maya Patel 5",
+    "language": "en",
+    "address": {
+      "city": "San Jose",
+      "zip": "95122"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "cpap",
+        "backup_hours": 12.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  },
+  {
+    "patient_id": "P-0060",
+    "tenant_id": "agency-b",
+    "display_name": "Luis Vega 5",
+    "language": "es",
+    "address": {
+      "city": "San Jose",
+      "zip": "95127"
+    },
+    "contact": {
+      "type": "self",
+      "caregiver_name": null
+    },
+    "devices": [
+      {
+        "type": "bipap",
+        "backup_hours": 24.0,
+        "backup_tank": null
+      }
+    ],
+    "lives_alone": false,
+    "mobility_limited": false
+  }
+]

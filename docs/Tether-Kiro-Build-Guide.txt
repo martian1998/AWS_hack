@@ -1,0 +1,525 @@
+TETHER: KIRO BUILD GUIDE AND MASTER PROMPT
+Prepared for the four-person SpartHill AWS-track team, 23 October 2026.
+
+PURPOSE
+Build a working hackathon application with measured reliability, security,
+capacity and cost controls. This is an implementation brief, not a claim that
+the application has been built, clinically validated, or tested at utility scale.
+Preserve the original persona: Dana, a home-health care coordinator.
+
+HOW TO USE THIS FILE
+1. Put your existing plan and idea document into your Kiro project under docs/source/.
+2. Open the project root in Kiro. Use a Feature Spec named tether-core.
+   If offered, choose Design-First because the architecture below is constrained.
+   If that option is absent, use the available Spec workflow with the same brief.
+3. Paste everything between BEGIN MASTER PROMPT and END MASTER PROMPT into Kiro.
+   Alternatively, put this file in docs/ and instruct Kiro to read that section.
+4. Review the resulting requirements, design, contracts and tasks as a team.
+5. Run the implementation prompts below in order. Keep one deployment owner.
+6. Preserve working behavior at each checkpoint; optional features come last.
+
+LOCAL SETUP: DO THIS BEFORE GENERATING FEATURE CODE
+These are commands for your own computer. Do not run them in this chat.
+If you already have a repository, open it instead of creating a replacement.
+
+  mkdir -p ~/Projects/tether
+  cd ~/Projects/tether
+  git init
+  mkdir -p docs/source
+
+Copy Tether-Team-Build-Plan.md, Tether-Idea-Explained.pdf and the challenge
+materials into docs/source/. Kiro may need an extracted text copy of the PDF;
+the Markdown plan is the primary implementation source. Never paste AWS keys,
+passwords, recovery codes or real patient data into Kiro chat or source files.
+
+Check installed tools:
+  git --version
+  node --version
+  npm --version
+  python3 --version
+  aws --version
+  sam --version
+
+Let Kiro inspect compatibility and produce SETUP.md for anything missing.
+Use a current supported Node LTS, a Lambda-supported Python runtime and pinned
+dependencies compatible with those versions. Do not copy version numbers from
+an old tutorial without checking them.
+
+AWS SETUP: ONE TEAM MEMBER OWNS THIS
+1. Use the organizer-provided team account and permitted temporary credentials.
+   Use AWS IAM Identity Center/SSO if supplied; otherwise follow the organizers'
+   credential instructions. Do not create long-lived access keys unnecessarily.
+2. Set the intended AWS profile and Region locally. Check:
+     aws sts get-caller-identity
+     aws configure list
+   Keep credentials out of screenshots, Git and frontend configuration.
+3. Ask Kiro to create a preflight script. Record account ID, Region and stack
+   prefix locally; use these to prevent deployment into the wrong account.
+4. Verify one small Bedrock request with the actual chosen model/inference profile,
+   its structured-output/tool-choice behavior, language support and Guardrail.
+   A catalog listing alone is not proof of invocation access.
+5. Verify model RPM/TPM, Lambda concurrency, API Gateway and messaging constraints.
+   Read-only quota checks may need console access. Record unknowns honestly.
+6. Confirm permissions for the proposed SAM resources. If an organizer role
+   cannot create Cognito or IAM resources, ask the AWS mentor for the approved
+   identity/resource route. Do not silently remove authentication.
+7. Confirm the team's SNS email subscription. Keep alerts minimal and synthetic.
+8. Create a budget notification, plus application-enforced usage ceilings.
+   A budget notification is delayed and is not a real-time spending stop.
+
+BEGIN MASTER PROMPT
+
+You are my senior AWS engineer and implementation partner inside Kiro.
+Create Tether, a deployed home-health outage outreach desk for a four-person
+hackathon team. Read docs/source/Tether-Team-Build-Plan.md and the other supplied
+idea/challenge documents if available. Inspect existing code before editing.
+Preserve useful work. This brief supersedes the old plan wherever contracts,
+security or asynchronous processing differ; document each such change.
+
+Do real implementation in small, tested vertical slices. First generate a
+Feature Spec named tether-core with requirements.md, design.md and tasks.md,
+plus shared API/job contracts. In this first pass finish the spec and scaffolding;
+do not spend the entire session writing prose or building optional features.
+Use the follow-up stage instructions to implement the approved design.
+Make routine engineering decisions and record assumptions. Ask only for a real
+blocker such as missing credentials, prohibited AWS permissions or unavailable
+model access. Never ask me to paste credentials into chat.
+
+1. PRODUCT AND NON-NEGOTIABLE MAIN FLOW
+Dana coordinates home-health patients during a utility power shutoff.
+She must identify affected patients, prioritize outreach, understand multilingual
+replies, escalate concerns, track unreachable people and hand cases to staff.
+Implement notice -> confirm uncertain geography/times -> match and rank ->
+outreach -> receive reply -> structured triage -> deterministic escalation ->
+human acknowledgment/resolution -> audit.
+Use only synthetic patients and a clearly labeled simulated SMS phone screen.
+Do not present this as a clinical system, a 911 replacement, an offline mesh,
+or a utility integration. Do not promise that every emergency is detectable.
+
+2. SCOPE AND STACK
+Core: React, Vite, TypeScript, accessible styling, TanStack Query, Amplify Hosting;
+API Gateway HTTP API; Python FastAPI/Mangum Lambda API; separate Lambda workers;
+DynamoDB on-demand; SQS standard queues with DLQs; DynamoDB Streams/outbox;
+SNS minimal email alerts; EventBridge scheduled reconciliation/follow-ups;
+Bedrock Converse plus a versioned Guardrail; CloudWatch; AWS SAM.
+Verify current SDK/SAM/Strands APIs and actual model capabilities from official
+documentation. Do not invent model IDs, ARNs, deployment outputs or test results.
+Use one AWS Region initially. Document regional failover and cells as future
+design work; do not build Kubernetes, Kafka or a second Region for this demo.
+Copilot, maps, RAG/Knowledge Base, real SMS, agentic personalization and handoff
+summary are optional after all core acceptance checks pass.
+
+3. INITIAL PROJECT OUTPUTS AND OWNERS
+Create .kiro/specs/tether-core/{requirements,design,tasks}.md using the Kiro
+workflow; .kiro/steering/tether.md for persistent safety/architecture conventions;
+shared/contracts.md and generated frontend types from canonical Pydantic/OpenAPI
+schemas; docs/{architecture,decisions,runbook,threat-model,capacity,costs}.md;
+backend/, frontend/, infra/template.yaml, data/, eval/, tests/ and scripts/.
+Canonical schemas must not be independently hand-maintained in two languages.
+Tasks need owner, dependencies, affected files, acceptance check and evidence.
+Owners: P1 AI; P2 backend/cloud and deployment; P3 frontend; P4 data/eval/story.
+P2 owns shared infrastructure/contracts. Keep shared edits coordinated.
+Do not invoke extra agents automatically; the four people work in separate
+branches against frozen contracts. Feature owners should not deploy concurrently.
+
+4. JOBS AND REVISED HTTP CONTRACTS
+Separate durable job status from patient status, model findings and human cases.
+All expensive actions use jobs. POST /events, POST /events/{id}/outreach and
+POST /inbound return 202 {job_id, resource_id, state, status_url, duplicate} after
+durable acceptance. They do not wait for a Bedrock result. Include pagination
+and consistent machine-readable error responses. GET /jobs/{job_id} returns
+authorized progress/result links. Preserve useful existing read-route names.
+Read routes include event board, patient thread, patient-scoped simulator
+messages, escalation queue, audit and operations/cost summaries.
+Human routes include confirm event, assign case, acknowledge case and resolve
+case with notes and expected version. API derives tenant and actor from validated
+identity, never from an unchecked body field. Protect jobs and metrics too.
+Only GET /health is publicly readable, with no sensitive configuration.
+POST /admin/reset and demo clock/fault tools require demo environment + admin.
+Do not expose a shared x-admin-token or secrets through VITE_* variables.
+Publish request/response examples before frontend feature work begins.
+
+Use a versioned job envelope like:
+{schema_version:1, job_id, kind, tenant_id, event_id, event_version,
+ patient_id:null, source_message_id:null, created_at, deadline_at,
+ correlation_id, payload_ref}.
+Queue IDs/references rather than full patient conversations. Validate all fields.
+Job states are ACCEPTED, QUEUED, RUNNING, SUCCEEDED, HUMAN_REVIEW, FAILED_VISIBLE
+or CANCELLED. Define valid transitions, lease expiry and terminal outcomes.
+Store individual attempts separately. Queue depth is an AWS metric, not a job
+state. Explain eventual consistency and measured metric timestamps in the UI.
+
+5. DURABILITY: ATOMIC INTAKE AND TRANSACTIONAL OUTBOX
+Use DynamoDB transactions to commit the inbound record, stable job identity,
+audit decision and outbox record atomically. Only then return 202.
+For a keyword emergency, include the escalation record/evidence and urgent
+notification outbox in that transaction, without waiting for the model.
+Reject invalid or unauthorized inputs before acceptance. On transaction failure,
+return a retryable error; do not show 'accepted'. Bind idempotency to authenticated
+tenant/source/message ID and a payload digest. Same ID/same payload returns the
+existing result; same ID/different payload returns 409. Hashing text and minute
+is not an acceptable identity. Retain deduplication records for the documented
+queue/redrive replay window; do not rely only on a transaction client token.
+
+A filtered Work/Outbox stream dispatches committed intents to triage, outreach
+or urgent notification queues. Publish before marking dispatched. A crash in
+that gap may duplicate delivery: consumers must handle it. Implement retryable
+dispatch, an index of pending outbox items, periodic reconciliation and alarms.
+Stream retention is finite; pending durable outbox work must be discoverable
+without a full table scan after stream failures or retention expiry.
+Never claim a database write followed by an SQS call is atomic.
+
+6. WORKERS, RETRIES AND CORRECTNESS
+Use separate triage, outreach and urgent notification processing lanes so bulk
+outreach does not monopolize ingress or alert delivery. Start with small batches
+and conservative concurrency; protect API capacity within actual account quotas.
+Use SQS ReportBatchItemFailures, DLQs and maxReceiveCount >= 5. Set visibility
+timeout >= 6 x function timeout + batching window. Bound function duration.
+Persist checkpoints/results so notification retries do not rerun successful AI.
+Use conditional job leases with fencing/version checks, expiry and safe recovery.
+Duplicate jobs must not increment completed counters or create cases twice.
+Use idempotent transactions for job completion, state, audit and follow-on outbox.
+Bound total model attempts across SDK retries and SQS redeliveries; do not let
+each retry layer multiply the model budget. Prefer disabling hidden SDK retries
+and implementing at most two explicitly metered, durably tracked attempts per
+job, unless a documented alternative provides the same bound. Failures retry with
+bounded jitter/backoff. Invalid model output, refusal or exhausted attempts goes
+to visible human review. DLQ work has an operator alert, replay procedure and
+reconciliation into FAILED_VISIBLE; it must not disappear from workload accounting.
+SNS/email is at-least-once at the external side-effect boundary. Use stable alert
+IDs and tracked publish attempts; do not promise exactly-once email delivery.
+Publishing an email is not human acknowledgment.
+
+7. DATA ACCESS AND SCALE
+Reuse original patient/event/message fields where useful; add tenant, event
+version, timestamps, source message identity and validated schema versions.
+Choose a small, documented table design: Records for profiles/events/status/
+messages, Escalations, append-oriented Audit, Work/Outbox with stream, and Control
+for usage/rate counters is an acceptable baseline. Explain every key and index.
+Partition by tenant and access pattern. Index patients by tenant/geography;
+distribute hot event status/audit workloads across fixed shards. Document shard
+queries, aggregation and pagination, including GSIs. Never scan all patients per
+outage or return every patient to render one board page. Do not maintain one hot
+counter per outage without discussing contention; use idempotent sharded counts
+or a justified measured demo simplification. Batch matching and fan-out with
+continuation jobs rather than a minute-long agent loop over the whole registry.
+Outage cancellation/version changes invalidate stale outreach work. Protect
+patient state from out-of-order model completions using version/sequence checks.
+An older safe reply must never downgrade a newer unresolved emergency.
+
+8. DETERMINISTIC RULES AND HUMAN WORK
+Document risk weights as editable demo assumptions, not clinical rules. Show
+inputs and reasons. Missing duration, unknown backup, ambiguous areas and dates
+require visible uncertainty and confirmation; do not invent a restoration time.
+ZIP matching is approximate geography and must be labeled as such.
+Patient state and escalation state are separate. Opening a case creates a stable
+case identity per defined incident, supports later evidence/severity updates and
+cannot silently overwrite a resolved case. Define when a new case is required.
+Only authorized human coordinators may acknowledge or resolve; resolution needs
+notes and optimistic concurrency. Patient replies/AI cannot resolve a case.
+Use explicit handling for unknowns: no defaulting unknown device-running to true,
+unknown emergency to false, or unknown remaining battery to zero without a flag.
+Do not infer a requested supply from an absent backup tank alone.
+Use multilingual keyword checks before AI as a conservative extra layer, with
+tests for negation, quotes, indirect phrasing, typos and prompt attacks. They are
+not complete emergency detection. Any earlier critical finding stays active when
+the Guardrail blocks or the model fails. Explicit reply codes are acknowledgments
+and requests for help, not automatic clinical clearance of existing risk/cases.
+Uncertainty and model unavailability lead to human review. Keep case assignment,
+unacknowledged age and owner workload visible. Follow-up times are configurable
+demo policy, with urgent-risk overrides, not universal medical deadlines.
+Track message queued/sent/failed/acknowledged separately from patient safety.
+Connectivity failure becomes unreachable/human outreach; do not claim offline
+delivery or guaranteed reachability during a cellular outage.
+
+9. AI CONTRACT AND GUARDRAILS
+Mandatory live Bedrock jobs: notice extraction and multilingual free-text reply
+triage. Use canonical Pydantic schemas with null/unknown values and bounds.
+Triage returns only supported findings: patient_reported_safe yes/no/unknown,
+emergency yes/no/unknown, device_running true/false/null, backup_hours_left
+number/null, explicitly stated needs, translation, exact evidence quotes and
+model confidence. Confidence is model-reported and uncalibrated, not a clinical
+probability. Validate quotes occur in original text; this checks provenance, not
+truth or full semantic entailment. Keep the original available to authorized staff.
+Never treat patient content as instructions, interpolate it into system policy,
+or allow it to select tenant, permissions, tools or actor identity.
+Check the exact selected model's structured-output/forced-tool support with a
+small live call. If unavailable, use a documented schema-constrained fallback
+with strict validation and one bounded repair; route remaining failure to human
+review. Do not silently switch to a model with untested language/safety behavior.
+Apply the versioned Guardrail where supported and explicitly validate/screen
+serialized tool arguments/results where required. Guardrails do not automatically
+screen every tool-use field and do not sanitize original invocation logs.
+Block treatment/dosing/device-setting advice while allowing reports of distress
+to be captured and escalated. Test both. A blocked model output never discards
+the incoming message. Keep model usage/latency/guardrail metadata for evidence.
+If a Strands outreach planner is added later, scope it to at most 5 patients per
+job, approved tools and a bounded step budget. It may recommend/draft; validated
+code enqueues actions. It has no resolve, raw database, arbitrary HTTP or shell
+tool. Start core outreach with approved language templates and deterministic
+personalization so AI outages do not prevent initial check-ins.
+
+10. AUTHENTICATION, AUTHORIZATION AND PRIVACY
+Use Cognito/OIDC with PKCE for the SPA and HTTP API JWT authorizers for staff
+routes. Validate issuer/audience/expiry and appropriate access-token scopes.
+Map staff to trusted tenant membership and roles server-side; do not trust a
+self-supplied tenant claim. Use coordinator, viewer and demo_admin roles.
+Never embed a client secret in the SPA. Simulator requests use short-lived,
+server-issued patient/event-scoped credentials validated by the backend or a
+dedicated authorizer. Token exposure must not grant staff read or resolve access.
+Prevent URL/referrer/log leakage; do not use patient IDs as authentication.
+Real provider callbacks, if added later, require verified signatures/replay
+handling and sender-to-patient mapping, not an arbitrary patient_id body.
+Enforce tenant/patient/role checks on every object route including job progress,
+audit, metrics, resolve, reset and export. Use stable 401/403/404 conventions and
+prevent existence leaks. Test horizontal and vertical privilege escalation.
+Encrypt storage/queues, use TLS, and grant least-privilege resource-scoped roles.
+Application audit writers cannot update/delete audit entries; retention/TTL and
+admin abilities mean this is not automatically a tamper-proof legal record.
+Use minimal PHI-free SNS subjects/bodies with authenticated case links.
+Do not log conversation text, bearer tokens, auth headers or guardrail traces
+with detected PII. Minimize/redact identifiers before model calls; preserve
+original messages only in authorized application storage. Synthetic invocation
+logging may be enabled for the demo, clearly labeled. Guardrails are not log
+redaction. CORS is not access control. HTTP API has no direct AWS WAF attachment;
+document a supported future placement or REST alternative if WAF is requested.
+
+11. QUOTAS AND COST ENFORCEMENT
+Check actual account/model/Region quotas; distinguish customers, request rate,
+concurrency, tokens/minute, guardrail limits and provider messaging throughput.
+Do not claim 'serverless means unlimited'. More APIs in one account/Region do
+not multiply its shared gateway quota; queues do not recover rejected requests.
+Implement shared request/token admission limits across workers with atomic
+control counters; local per-process counters alone are insufficient. Reserve
+conservative model quota/budget before a call, including model-specific output
+token accounting, and record actual usage separately. Give reply triage priority
+over optional AI work; urgent deterministic escalation must not require AI quota.
+Use configurable caps: MAX_MODEL_CALLS_PER_RUN, MAX_INPUT_SIZE, MAX_OUTPUT_TOKENS,
+MAX_MODEL_ATTEMPTS_PER_JOB, MAX_AGENT_STEPS, queue concurrency and tenant/run
+usage ceilings. Default load-test AI cap to 5 calls; larger live tests are explicit.
+Count retries/repairs in caps. Describe a conservative spend bound; do not claim
+the entire AWS account has a guaranteed dollar cap or Budget alerts stop spend.
+Pricing must be a dated config by Region/model, with source URLs and units.
+Unknown rates stay unknown; never fabricate a precise total. Itemize model tokens,
+Guardrail policies/text units, API, Lambda, DynamoDB including transactions/GSIs,
+SQS, schedules, logs/hosting and optional messaging segments/fees. Mark credits
+and taxes separately. Label estimates versus observed usage versus billed costs.
+No per-patient custom CloudWatch dimensions and no unbounded prompt/log retention.
+
+12. FRONTEND AND OPERATIONS
+Make a clear board with outage confirmation, ranked/paginated patients, outreach
+progress, patient thread, exact-evidence highlights and separate escalation queue.
+Use text/icons with colors, accessible focus and readable recording typography.
+Add assignment, acknowledgment, resolution notes, timestamps, loading/error/empty
+states, pending triage and human-review states. Retry buttons reuse idempotency
+keys for the same operation; a new message receives a new ID.
+Staff dashboards may poll authorized aggregates at a modest interval with backoff
+and stop when hidden/idle. Simulator polling is for the few demo windows only.
+Do not design millions of phones to poll every two seconds. Document production
+provider webhooks and possible staff push updates as the next stage.
+Include a capacity worksheet for a hypothetical 1 million registered patients,
+100,000 affected patients and 20,000 free-text replies over 10 minutes. Separate
+registry size, internal fan-out, ingress rate, model RPM/TPM, worker concurrency,
+queue-drain time and staff capacity. Use measured service times and actual quotas
+when available; otherwise label assumptions and show the limiting factor. Treat
+this as a capacity model, not a claim that a million-patient load test was run.
+Operations panel: accepted unique jobs, pending/running, succeeded, human review,
+failed-visible, cancelled, duplicate submissions, queue age/depth, DLQ, intake
+and completion latency, unresolved/unacknowledged cases, model calls/tokens and
+estimated cost, each with source and time window. Keep tenant information scoped.
+Make counters reconcilable with durable records; never invent a zero-failure badge.
+All pages show SYNTHETIC DEMO DATA and distinguish LIVE BEDROCK, MOCK and REPLAY.
+
+13. OBSERVABILITY AND RECOVERY
+Use structured logs with correlation/job IDs and non-sensitive error codes.
+Create alarms for pending-outbox age, oldest queue message, DLQ, Lambda errors/
+throttles, API errors, model throttling and unacknowledged urgent cases. No alarm
+should depend solely on the same optional AI path that failed.
+Implement scheduled follow-up/reconciliation queries against a due-time index.
+Do not use DynamoDB TTL deletion as a precise timer. Timer actions re-check
+reply/case/event state and contact attempt before acting; stale timers do nothing.
+Document SNS subscription confirmation, redrive, replay, rollback, resource
+cleanup and whether work survives a deployment. Demo clock/fault injection uses
+injected clock/provider adapters, requires demo_admin and cannot affect live data.
+Document remaining single-Region, cellular/provider and human-staffing limits.
+
+14. ACCEPTANCE AND EVIDENCE
+Write focused tests for high-impact invariants and integration boundaries, not
+tests that only mirror implementation. Cover duplicate/reordered/concurrent
+messages, idempotency payload conflict, transaction failure, crash after queue
+publish, expired job lease, dispatch outage, retries, DLQ/reconciliation, model
+timeout/invalid JSON/refusal, stale event cancellation, budget exhaustion and
+cross-tenant/role violations. Distinguish unit/integration/stub/live-AWS evidence.
+Use 60 synthetic patients in EN/ES/VI/ZH/TL, two synthetic agencies, ambiguous
+notices and at least one uncertain time. No real people or medical records.
+Preserve the original 30 labeled reply evaluation cases including 6 emergencies,
+6 ambiguous replies and 2 injections. Add safety regressions separately; report
+recall with counts, false positives, human-review rate and language-specific
+misses. Never turn a hand-written demo set into a clinical validation claim.
+Create a rate-controlled script defaulting to a small test. It must distinguish
+real Bedrock, deterministic replies, mock/replay and synthetic transport. A
+1,000-submission demonstration is optional after measured small tests and caps.
+Verify every unique accepted job is in exactly one current state; do not double
+count DLQ and job state. At drain, no unaccounted pending/running jobs remain.
+Prove no duplicate case records from replay, and urgent keyword cases become
+visible without waiting for Bedrock. Record intake p50/p95 separately from
+model completion and human acknowledgment. Performance numbers are measured
+results or explicit targets, never made-up achievements.
+
+15. IMPLEMENTATION ORDER AND DEFINITION OF DONE
+Stage A: schemas, repository, spec, local adapters, mocks, auth design and
+preflight. Stage B: deployed minimal authenticated API, durable intake/outbox,
+one queued triage worker, real Bedrock, escalation, SNS and audit.
+Stage C: notice parsing, confirmation, ranked board, patient simulator and human
+assignment/acknowledgment/resolution end to end. Stage D: full retry/recovery,
+additional lanes, follow-ups, authorization regression tests and budget controls.
+Stage E: measured load/evaluation, operations/cost views, polish and recording.
+Get early deployed evidence; do not implement every recovery scenario before
+the first live patient flow. Do not sacrifice core safety/auth for optional UI.
+Optional copilot/handoff/agent features start only after all core checks pass.
+
+Every stage ends with working code, commands actually run, concise results,
+remaining blockers and changes to assumptions/contracts. Run relevant checks:
+Python tests, frontend typecheck/build, contract synchronization, SAM validation
+and deployed smoke tests. Use dependency lockfiles. Do not label a stub as a real
+AWS integration. Finish with SETUP.md and exact generated command scripts for
+install, tests, local dev, preflight, deploy, seed, smoke, eval, load and cleanup.
+Use the existing team sandbox profile/account/Region if configured. Confirm the
+target through read-only identity checks and deploy only Tether-prefixed resources;
+never silently switch accounts or touch unrelated resources. If permission/model
+access blocks a step, finish independent work and give the precise required action.
+Do not claim deployment, email arrival or passing tests without observing them.
+
+Start now by inspecting the project, reconciling this brief with the original
+plan, and generating the tether-core spec, contract examples and owner task list.
+
+END MASTER PROMPT
+
+IMPLEMENTATION PROMPTS: SEND THESE AFTER THE SPEC IS READY
+
+PROMPT A: FOUNDATION AND PREFLIGHT
+Read the tether-core spec. Implement Stage A only: scaffold the repo, canonical
+Pydantic/OpenAPI schemas and generated TypeScript types, versioned job contracts,
+API examples, mock adapters, frontend mock board and simulator shell. Create
+preflight/setup scripts and inspect my available AWS profile/Region without
+printing credentials. Verify one real Bedrock schema/Guardrail call if access is
+configured. Generate the SAM baseline and identity design. Run local relevant
+checks and report exactly what is live, mocked or blocked. Do not add optional
+features. Do not replace the spec or change contracts silently.
+
+DONE WHEN: all four people can use the same examples/types; frontend mock mode
+runs; SAM validates; model preflight succeeds or the exact access blocker is known.
+
+PROMPT B: FIRST DEPLOYED PATIENT FLOW
+Implement Stage B as the smallest deployed vertical slice: authenticated
+patient-scoped intake, atomic inbound/job/audit/outbox transaction, stream dispatch,
+SQS triage worker, real Bedrock structured triage, deterministic escalation,
+minimal SNS notification and authorized job/thread reads. Use one synthetic
+Spanish reply. Add a keyword emergency that opens a case without a model result.
+Return 202 only after durable acceptance. Add core duplicate, authorization and
+model-timeout tests. Use the configured team sandbox for deployment and report
+real observations. No copilot, maps, handoff or whole-list agent loop.
+
+DONE WHEN: a real request is durably accepted; the worker performs a real model
+call; the record/case is visible; the team verifies an actual SNS email arrival;
+replaying the source ID does not create another case.
+
+PROMPT C: CONNECT THE PRODUCT
+Implement Stage C: notice job, uncertainty confirmation, indexed geography
+matching, deterministic risk explanations, bounded outreach/template jobs,
+paginated board, patient drawer/evidence, scoped phone simulator, case ownership,
+acknowledgment/resolution and audit. Connect the frontend to the live API and
+deploy it to Amplify. Generated public frontend config must contain no secrets.
+Preserve pending/failed/human-review states and keep unresolved cases active
+after an acknowledgment or ambiguous reply. Run the deployed main-flow smoke test.
+
+DONE WHEN: a coordinator can complete the full notice-to-resolved-case flow on
+the deployed URL; unauthorized/other-agency requests are denied.
+
+PROMPT D: RECOVERY, SECURITY AND COST
+Implement Stage D: urgent notification isolation, pending-outbox reconciliation,
+lease recovery, per-record batch failures, DLQ monitoring/replay, indexed follow-up
+processing, shared model rate/token admission and cumulative run budgets. Exercise
+transaction failure, crash-after-publish, timeout, stale reply, event cancellation,
+duplicate completion, payload conflict, other-agency IDs and patient-token abuse.
+Keep traces/payloads out of logs. Run focused checks and close actual findings.
+Document any remaining unsupported edge case rather than hiding it.
+
+DONE WHEN: accepted work stays accounted for across tested failures; no unauthorized
+case closure is possible; bounded AI usage is visible and deterministic escalation
+continues after the AI path is disabled. External email duplication remains an
+explicit side-effect limitation, not an exactly-once guarantee.
+
+PROMPT E: EVIDENCE AND RECORDING
+Implement Stage E. Run the small labeled live Bedrock evaluation within the
+configured cap. Run a controlled transport/load test with duplicates and report
+which messages used real models, deterministic code or mocks. Reconcile accepted
+unique job states; report intake latency separately from end-to-end completion.
+Populate cost estimates using actual token usage and dated configurable rates,
+leaving unknown service costs visible. Add the operations display and readable
+1080p polish. Produce a five-minute video script with persona, architecture,
+unbroken main flow, real model evidence, a failure/security test and honest results.
+No invented measurements, customer validation, clinical claims or utility-scale
+load claims. Preserve the remaining recording/submission buffer.
+
+DONE WHEN: README/eval/load reports match observed behavior; the demonstration
+is repeatable; the app has no uncaught visible errors; the video is within five
+minutes and the team has verified upload completion before the hard deadline.
+
+PROMPT FOR AN ERROR OR DRIFT
+Keep the current architecture and working stages. Reproduce this error using
+the actual logs/test output below. Identify the smallest root-cause fix, add or
+run a focused regression check, then rerun the failed operation. Do not rewrite
+the project, bypass authentication, drop the failing record or replace real
+AWS behavior with mocks to make the error disappear.
+Observed error: [PASTE REDACTED ERROR]
+Expected behavior: [ONE SENTENCE]
+
+FOUR-PERSON HANDOFFS
+P1: schemas for model findings; model access/tool capability check; prompts;
+language fixtures; Guardrail integration; output validation; token/latency metadata.
+P2: SAM/resources; canonical routes/models; auth integration; transactions/outbox;
+jobs/retries; ranking/rules; notifications/follow-ups; deployment and recovery.
+P3: frontend mock mode first; board/thread/simulator; async job progress;
+assignment/acknowledgment/resolution; operation metrics; Amplify and polish.
+P4: 60 synthetic patients/two agencies; notices/language templates; 30-case gold
+set; load/security/failure scenarios; cost assumptions; evidence/video/README.
+P1 can implement model admission/usage helpers behind contracts to reduce P2's
+workload. P4 can own recovery/load harnesses. Do not make P2 the sole tester.
+
+FINAL CHECKLIST FOR THE TEAM
+[ ] Real Bedrock notice/reply behavior demonstrated; language claims match tests.
+[ ] Staff/patient authorization and two-agency denial tests pass.
+[ ] 202 means durable acceptance, not completed processing.
+[ ] Duplicate IDs and concurrent redelivery do not duplicate case records.
+[ ] Dispatch/worker failures leave recoverable or visible work.
+[ ] Emergency keyword case remains visible with the model disabled.
+[ ] Unknowns and original evidence are visible; safe replies do not close cases.
+[ ] Human acknowledgment is separate from email publication and resolution.
+[ ] Usage ceilings work; pricing assumptions and excluded SMS costs are labeled.
+[ ] No credentials/conversations leak through frontend config or routine logs.
+[ ] Load/evaluation measurements are real and scoped; no million-customer claim.
+[ ] Simulator/mock mode is labeled; known cellular/single-Region limits are stated.
+[ ] Working main flow is protected; optional features have not displaced it.
+[ ] Record with time to edit and upload. Original deck: hard stop 11:00 AM
+      Saturday; original team target: upload by 10:30 AM, Pacific time.
+
+OFFICIAL REFERENCES FOR KIRO TO VERIFY AGAIN DURING IMPLEMENTATION
+Kiro Specs: https://kiro.dev/docs/specs/
+Kiro Feature Specs: https://kiro.dev/docs/specs/feature-specs/
+Kiro Steering: https://kiro.dev/docs/steering/
+AWS transactional outbox: https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html
+DynamoDB transactions: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html
+Lambda/SQS configuration: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-configure.html
+Lambda/SQS scaling: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-scaling.html
+API Gateway quotas: https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html
+HTTP versus REST API: https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html
+HTTP API JWT auth: https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-jwt-authorizer.html
+Bedrock sensitive filters/log limitations: https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-sensitive-filters.html
+Bedrock quotas: https://docs.aws.amazon.com/bedrock/latest/userguide/quotas.html
+Bedrock pricing: https://aws.amazon.com/bedrock/pricing/
+API Gateway pricing: https://aws.amazon.com/api-gateway/pricing/
+AWS Budgets: https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html
+
+This guide specifies work for Kiro and the team. No application build, deployment,
+load test, email delivery or clinical evaluation was performed in creating it.

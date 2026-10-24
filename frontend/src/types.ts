@@ -1,0 +1,11 @@
+import type { components } from './generated/api';
+export type Schema = components['schemas'];
+export type Board = Schema['Board'];
+export type Patient = Schema['Patient'];
+export type Thread = Schema['Thread'];
+export type Message = Schema['Message'];
+export type Escalation = Schema['Escalation'];
+export type Inbound = Schema['InboundRequest'];
+export type Accepted = Schema['Accepted'];
+export type Job = Schema['Job'];
+export type Audit = Schema['AuditEntry'];

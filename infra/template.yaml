@@ -1,0 +1,757 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Tether Stage A inert baseline. No durable intake or enabled queue consumers.
+Parameters:
+  Prefix:
+    Type: String
+    Default: tether-demo
+    AllowedPattern: ^tether-[a-z0-9-]+$
+  StaffIssuer:
+    Type: String
+    Description: Organizer-approved Cognito/OIDC issuer URL
+    AllowedPattern: ^https://.+
+  StaffClientId:
+    Type: String
+    Description: Public PKCE SPA client ID; never a secret
+    MinLength: 1
+  FrontendOrigin:
+    Type: String
+    Description: Exact approved Amplify HTTPS origin
+    AllowedPattern: ^https://[^/]+$
+Globals:
+  Function:
+    Runtime: python3.14
+    Architectures:
+    - arm64
+    CodeUri: ../backend/
+    Timeout: 30
+    MemorySize: 256
+    Environment:
+      Variables:
+        TETHER_STAGE: A
+Resources:
+  RecordsTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName:
+        Fn::Sub: ${Prefix}-records
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+      - AttributeName: PK
+        AttributeType: S
+      - AttributeName: SK
+        AttributeType: S
+      - AttributeName: GSI1PK
+        AttributeType: S
+      - AttributeName: GSI1SK
+        AttributeType: S
+      KeySchema:
+      - AttributeName: PK
+        KeyType: HASH
+      - AttributeName: SK
+        KeyType: RANGE
+      SSESpecification:
+        SSEEnabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      GlobalSecondaryIndexes:
+      - IndexName: GSI1
+        KeySchema:
+        - AttributeName: GSI1PK
+          KeyType: HASH
+        - AttributeName: GSI1SK
+          KeyType: RANGE
+        Projection:
+          ProjectionType: ALL
+  EscalationsTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName:
+        Fn::Sub: ${Prefix}-escalations
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+      - AttributeName: PK
+        AttributeType: S
+      - AttributeName: SK
+        AttributeType: S
+      - AttributeName: GSI1PK
+        AttributeType: S
+      - AttributeName: GSI1SK
+        AttributeType: S
+      KeySchema:
+      - AttributeName: PK
+        KeyType: HASH
+      - AttributeName: SK
+        KeyType: RANGE
+      SSESpecification:
+        SSEEnabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      GlobalSecondaryIndexes:
+      - IndexName: GSI1
+        KeySchema:
+        - AttributeName: GSI1PK
+          KeyType: HASH
+        - AttributeName: GSI1SK
+          KeyType: RANGE
+        Projection:
+          ProjectionType: ALL
+  AuditTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName:
+        Fn::Sub: ${Prefix}-audit
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+      - AttributeName: PK
+        AttributeType: S
+      - AttributeName: SK
+        AttributeType: S
+      KeySchema:
+      - AttributeName: PK
+        KeyType: HASH
+      - AttributeName: SK
+        KeyType: RANGE
+      SSESpecification:
+        SSEEnabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+  WorkTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName:
+        Fn::Sub: ${Prefix}-work
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+      - AttributeName: PK
+        AttributeType: S
+      - AttributeName: SK
+        AttributeType: S
+      - AttributeName: GSI1PK
+        AttributeType: S
+      - AttributeName: GSI1SK
+        AttributeType: S
+      KeySchema:
+      - AttributeName: PK
+        KeyType: HASH
+      - AttributeName: SK
+        KeyType: RANGE
+      SSESpecification:
+        SSEEnabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      GlobalSecondaryIndexes:
+      - IndexName: GSI1
+        KeySchema:
+        - AttributeName: GSI1PK
+          KeyType: HASH
+        - AttributeName: GSI1SK
+          KeyType: RANGE
+        Projection:
+          ProjectionType: ALL
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+  ControlTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      TableName:
+        Fn::Sub: ${Prefix}-control
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+      - AttributeName: PK
+        AttributeType: S
+      - AttributeName: SK
+        AttributeType: S
+      KeySchema:
+      - AttributeName: PK
+        KeyType: HASH
+      - AttributeName: SK
+        KeyType: RANGE
+      SSESpecification:
+        SSEEnabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+  TriageDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName:
+        Fn::Sub: ${Prefix}-triage-dlq
+      SqsManagedSseEnabled: true
+      MessageRetentionPeriod: 1209600
+  TriageQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName:
+        Fn::Sub: ${Prefix}-triage
+      SqsManagedSseEnabled: true
+      MessageRetentionPeriod: 345600
+      VisibilityTimeout: 180
+      RedrivePolicy:
+        deadLetterTargetArn:
+          Fn::GetAtt:
+          - TriageDLQ
+          - Arn
+        maxReceiveCount: 5
+  TriageDLQAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName:
+        Fn::Sub: ${Prefix}-triage-dlq
+      Namespace: AWS/SQS
+      MetricName: ApproximateNumberOfMessagesVisible
+      Dimensions:
+      - Name: QueueName
+        Value:
+          Fn::GetAtt:
+          - TriageDLQ
+          - QueueName
+      Statistic: Maximum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions:
+      - Ref: AlertTopic
+  OutreachDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName:
+        Fn::Sub: ${Prefix}-outreach-dlq
+      SqsManagedSseEnabled: true
+      MessageRetentionPeriod: 1209600
+  OutreachQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName:
+        Fn::Sub: ${Prefix}-outreach
+      SqsManagedSseEnabled: true
+      MessageRetentionPeriod: 345600
+      VisibilityTimeout: 180
+      RedrivePolicy:
+        deadLetterTargetArn:
+          Fn::GetAtt:
+          - OutreachDLQ
+          - Arn
+        maxReceiveCount: 5
+  OutreachDLQAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName:
+        Fn::Sub: ${Prefix}-outreach-dlq
+      Namespace: AWS/SQS
+      MetricName: ApproximateNumberOfMessagesVisible
+      Dimensions:
+      - Name: QueueName
+        Value:
+          Fn::GetAtt:
+          - OutreachDLQ
+          - QueueName
+      Statistic: Maximum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions:
+      - Ref: AlertTopic
+  UrgentDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName:
+        Fn::Sub: ${Prefix}-urgent-dlq
+      SqsManagedSseEnabled: true
+      MessageRetentionPeriod: 1209600
+  UrgentQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName:
+        Fn::Sub: ${Prefix}-urgent
+      SqsManagedSseEnabled: true
+      MessageRetentionPeriod: 345600
+      VisibilityTimeout: 180
+      RedrivePolicy:
+        deadLetterTargetArn:
+          Fn::GetAtt:
+          - UrgentDLQ
+          - Arn
+        maxReceiveCount: 5
+  UrgentDLQAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName:
+        Fn::Sub: ${Prefix}-urgent-dlq
+      Namespace: AWS/SQS
+      MetricName: ApproximateNumberOfMessagesVisible
+      Dimensions:
+      - Name: QueueName
+        Value:
+          Fn::GetAtt:
+          - UrgentDLQ
+          - QueueName
+      Statistic: Maximum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions:
+      - Ref: AlertTopic
+  AlertTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName:
+        Fn::Sub: ${Prefix}-alerts
+      KmsMasterKeyId: alias/aws/sns
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+        - Ref: FrontendOrigin
+        AllowHeaders:
+        - authorization
+        - content-type
+        - idempotency-key
+        AllowMethods:
+        - GET
+        - POST
+        - OPTIONS
+        MaxAge: 300
+      Auth:
+        DefaultAuthorizer: StaffJwt
+        Authorizers:
+          StaffJwt:
+            IdentitySource: $request.header.Authorization
+            JwtConfiguration:
+              issuer:
+                Ref: StaffIssuer
+              audience:
+              - Ref: StaffClientId
+            AuthorizationScopes:
+            - tether/read
+  ApiLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/lambda/${Prefix}-api
+      RetentionInDays: 7
+  ApiRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: tether-scaffold
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            Resource:
+              Fn::GetAtt:
+              - ApiLogs
+              - Arn
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    DependsOn: ApiLogs
+    Properties:
+      FunctionName:
+        Fn::Sub: ${Prefix}-api
+      Handler: tether.api.handler
+      Role:
+        Fn::GetAtt:
+        - ApiRole
+        - Arn
+      Events:
+        Health:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /health
+            Method: GET
+            Auth:
+              Authorizer: NONE
+        CreateEvent:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /events
+            Method: POST
+            Auth:
+              Authorizer: StaffJwt
+              AuthorizationScopes:
+              - tether/write
+        Confirm:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /events/{event_id}/confirm
+            Method: POST
+            Auth:
+              Authorizer: StaffJwt
+              AuthorizationScopes:
+              - tether/write
+        Outreach:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /events/{event_id}/outreach
+            Method: POST
+            Auth:
+              Authorizer: StaffJwt
+              AuthorizationScopes:
+              - tether/write
+        Inbound:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /inbound
+            Method: POST
+            Auth:
+              Authorizer: NONE
+        Job:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /jobs/{job_id}
+            Method: GET
+            Auth:
+              Authorizer: NONE
+        Board:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /events/{event_id}/board
+            Method: GET
+            Auth:
+              Authorizer: StaffJwt
+              AuthorizationScopes:
+              - tether/read
+        Thread:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /patients/{patient_id}/thread
+            Method: GET
+            Auth:
+              Authorizer: StaffJwt
+              AuthorizationScopes:
+              - tether/read
+        Phone:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /phone/{patient_id}/messages
+            Method: GET
+            Auth:
+              Authorizer: NONE
+        Session:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /simulator/sessions
+            Method: POST
+            Auth:
+              Authorizer: StaffJwt
+              AuthorizationScopes:
+              - tether/write
+        Cases:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /events/{event_id}/escalations
+            Method: GET
+            Auth:
+              Authorizer: StaffJwt
+              AuthorizationScopes:
+              - tether/read
+        Assign:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /escalations/{case_id}/assign
+            Method: POST
+            Auth:
+              Authorizer: StaffJwt
+              AuthorizationScopes:
+              - tether/write
+        Ack:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /escalations/{case_id}/acknowledge
+            Method: POST
+            Auth:
+              Authorizer: StaffJwt
+              AuthorizationScopes:
+              - tether/write
+        Resolve:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /escalations/{case_id}/resolve
+            Method: POST
+            Auth:
+              Authorizer: StaffJwt
+              AuthorizationScopes:
+              - tether/write
+        Audit:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /events/{event_id}/audit
+            Method: GET
+            Auth:
+              Authorizer: StaffJwt
+              AuthorizationScopes:
+              - tether/read
+        Ops:
+          Type: HttpApi
+          Properties:
+            ApiId:
+              Ref: HttpApi
+            Path: /operations
+            Method: GET
+            Auth:
+              Authorizer: StaffJwt
+              AuthorizationScopes:
+              - tether/read
+  TriageLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/lambda/${Prefix}-triage
+      RetentionInDays: 7
+  TriageRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: tether-scaffold
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            Resource:
+              Fn::GetAtt:
+              - TriageLogs
+              - Arn
+          - Effect: Allow
+            Action:
+            - sqs:ReceiveMessage
+            - sqs:DeleteMessage
+            - sqs:GetQueueAttributes
+            Resource:
+              Fn::GetAtt:
+              - TriageQueue
+              - Arn
+  TriageFunction:
+    Type: AWS::Serverless::Function
+    DependsOn: TriageLogs
+    Properties:
+      FunctionName:
+        Fn::Sub: ${Prefix}-triage
+      Handler: tether.worker.handler
+      Role:
+        Fn::GetAtt:
+        - TriageRole
+        - Arn
+      Events:
+        Queue:
+          Type: SQS
+          Properties:
+            Queue:
+              Fn::GetAtt:
+              - TriageQueue
+              - Arn
+            Enabled: false
+            BatchSize: 1
+            MaximumBatchingWindowInSeconds: 0
+            FunctionResponseTypes:
+            - ReportBatchItemFailures
+            ScalingConfig:
+              MaximumConcurrency: 2
+  OutreachLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/lambda/${Prefix}-outreach
+      RetentionInDays: 7
+  OutreachRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: tether-scaffold
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            Resource:
+              Fn::GetAtt:
+              - OutreachLogs
+              - Arn
+          - Effect: Allow
+            Action:
+            - sqs:ReceiveMessage
+            - sqs:DeleteMessage
+            - sqs:GetQueueAttributes
+            Resource:
+              Fn::GetAtt:
+              - OutreachQueue
+              - Arn
+  OutreachFunction:
+    Type: AWS::Serverless::Function
+    DependsOn: OutreachLogs
+    Properties:
+      FunctionName:
+        Fn::Sub: ${Prefix}-outreach
+      Handler: tether.worker.handler
+      Role:
+        Fn::GetAtt:
+        - OutreachRole
+        - Arn
+      Events:
+        Queue:
+          Type: SQS
+          Properties:
+            Queue:
+              Fn::GetAtt:
+              - OutreachQueue
+              - Arn
+            Enabled: false
+            BatchSize: 1
+            MaximumBatchingWindowInSeconds: 0
+            FunctionResponseTypes:
+            - ReportBatchItemFailures
+            ScalingConfig:
+              MaximumConcurrency: 2
+  UrgentLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName:
+        Fn::Sub: /aws/lambda/${Prefix}-urgent
+      RetentionInDays: 7
+  UrgentRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: tether-scaffold
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            Resource:
+              Fn::GetAtt:
+              - UrgentLogs
+              - Arn
+          - Effect: Allow
+            Action:
+            - sqs:ReceiveMessage
+            - sqs:DeleteMessage
+            - sqs:GetQueueAttributes
+            Resource:
+              Fn::GetAtt:
+              - UrgentQueue
+              - Arn
+  UrgentFunction:
+    Type: AWS::Serverless::Function
+    DependsOn: UrgentLogs
+    Properties:
+      FunctionName:
+        Fn::Sub: ${Prefix}-urgent
+      Handler: tether.worker.handler
+      Role:
+        Fn::GetAtt:
+        - UrgentRole
+        - Arn
+      Events:
+        Queue:
+          Type: SQS
+          Properties:
+            Queue:
+              Fn::GetAtt:
+              - UrgentQueue
+              - Arn
+            Enabled: false
+            BatchSize: 1
+            MaximumBatchingWindowInSeconds: 0
+            FunctionResponseTypes:
+            - ReportBatchItemFailures
+            ScalingConfig:
+              MaximumConcurrency: 2
+Outputs:
+  ApiUrl:
+    Value:
+      Fn::Sub: https://${HttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}
+  Stage:
+    Value: "A \u2014 application routes fail closed; all SQS mappings disabled"

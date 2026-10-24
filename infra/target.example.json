@@ -1,0 +1,13 @@
+{
+  "region": "us-east-1",
+  "profile": null,
+  "expected_account_id": null,
+  "stack_name": "tether-demo",
+  "model_id": null,
+  "guardrail_id": null,
+  "guardrail_version": null,
+  "staff_issuer": null,
+  "staff_client_id": null,
+  "frontend_origin": null,
+  "sns_topic_arn": null
+}
